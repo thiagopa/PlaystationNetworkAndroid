@@ -15,8 +15,7 @@
  */
 package br.com.thiagopagonha.psnapi;
 
-import static br.com.thiagopagonha.psnapi.CommonUtilities.SENDER_ID;
-import static br.com.thiagopagonha.psnapi.CommonUtilities.displayMessage;
+import static br.com.thiagopagonha.psnapi.CommonUtilities.*;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -90,13 +89,13 @@ public class GCMIntentService extends GCMBaseIntentService {
      * Issues a notification to inform the user that server has sent a message.
      */
     private static void generateNotification(Context context, String message) {
-        int icon = R.drawable.ic_stat_gcm;
+        int icon = R.drawable.ic_launcher;
         long when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new Notification(icon, message, when);
         String title = context.getString(R.string.app_name);
-        Intent notificationIntent = new Intent(context, DemoActivity.class);
+        Intent notificationIntent = new Intent(context, MainActivity.class);
         // set intent so it does not start a new activity
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -18,13 +18,12 @@ package br.com.thiagopagonha.psnapi;
 import static br.com.thiagopagonha.psnapi.CommonUtilities.SERVER_URL;
 import static br.com.thiagopagonha.psnapi.CommonUtilities.TAG;
 import static br.com.thiagopagonha.psnapi.CommonUtilities.displayMessage;
+import static br.com.thiagopagonha.psnapi.Method.DELETE;
+import static br.com.thiagopagonha.psnapi.Method.POST;
 
-import com.google.android.gcm.GCMRegistrar;
-
-import android.content.Context;
-import android.util.Log;
-
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -34,6 +33,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.google.android.gcm.GCMRegistrar;
 
 /**
  * Helper class used to communicate with the demo server.
@@ -62,7 +66,7 @@ public final class ServerUtilities {
             try {
                 displayMessage(context, context.getString(
                         R.string.server_registering, i, MAX_ATTEMPTS));
-                post(serverUrl, params);
+                request(POST,serverUrl, params);
                 GCMRegistrar.setRegisteredOnServer(context, true);
                 String message = context.getString(R.string.server_registered);
                 CommonUtilities.displayMessage(context, message);
@@ -102,7 +106,7 @@ public final class ServerUtilities {
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
         try {
-            post(serverUrl, params);
+            request(DELETE,serverUrl, params);
             GCMRegistrar.setRegisteredOnServer(context, false);
             String message = context.getString(R.string.server_unregistered);
             CommonUtilities.displayMessage(context, message);
@@ -126,14 +130,9 @@ public final class ServerUtilities {
      *
      * @throws IOException propagated from POST.
      */
-    private static void post(String endpoint, Map<String, String> params)
+    private static void request(Method method,String endpoint, Map<String, String> params)
             throws IOException {
-        URL url;
-        try {
-            url = new URL(endpoint);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("invalid url: " + endpoint);
-        }
+ 
         StringBuilder bodyBuilder = new StringBuilder();
         Iterator<Entry<String, String>> iterator = params.entrySet().iterator();
         // constructs the POST body using the parameters
@@ -146,25 +145,49 @@ public final class ServerUtilities {
             }
         }
         String body = bodyBuilder.toString();
+        
+        URL url;
+        try {
+            if(!POST.equals(method)) {
+            	url = new URL(endpoint + "?" + body);
+            } else {
+            	url = new URL(endpoint);
+            }	
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("invalid url: " + endpoint);
+        }
+        
         Log.v(TAG, "Posting '" + body + "' to " + url);
-        byte[] bytes = body.getBytes();
+        
         HttpURLConnection conn = null;
         try {
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setUseCaches(false);
-            conn.setFixedLengthStreamingMode(bytes.length);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded;charset=UTF-8");
-            // post the request
-            OutputStream out = conn.getOutputStream();
-            out.write(bytes);
-            out.close();
+        	conn = (HttpURLConnection) url.openConnection();
+        	conn.setDoOutput(true);
+        	conn.setUseCaches(false);
+        	conn.setRequestMethod(method.name());
+            
+            if(POST.equals(method)) {
+            	byte[] bytes = body.getBytes();
+            	
+            	conn.setFixedLengthStreamingMode(bytes.length);
+            	conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+                // post the request
+                OutputStream out = conn.getOutputStream();
+                out.write(bytes);
+                out.close();
+            } 
+            
+            BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder total = new StringBuilder();
+            String line;
+            while ((line = r.readLine()) != null) {
+                total.append(line);
+            }
+            
             // handle the response
             int status = conn.getResponseCode();
             if (status != 200) {
-              throw new IOException("Post failed with error code " + status);
+              throw new IOException("Post failed with error code " + status + " and message " + total);
             }
         } finally {
             if (conn != null) {
