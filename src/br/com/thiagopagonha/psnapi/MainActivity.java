@@ -1,5 +1,13 @@
 package br.com.thiagopagonha.psnapi;
 
+import static br.com.thiagopagonha.psnapi.CommonUtilities.DISPLAY_MESSAGE_ACTION;
+import static br.com.thiagopagonha.psnapi.CommonUtilities.EXTRA_MESSAGE;
+import static br.com.thiagopagonha.psnapi.CommonUtilities.SENDER_ID;
+import static br.com.thiagopagonha.psnapi.CommonUtilities.SERVER_URL;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,13 +15,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.gcm.GCMRegistrar;
-
-import static  br.com.thiagopagonha.psnapi.CommonUtilities.*;
 
 public class MainActivity extends Activity {
 
@@ -120,7 +127,10 @@ public class MainActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-			mDisplay.append(newMessage + "\n");
+			
+			String currentDateTimeString = DateFormat.getDateFormat(context).format(Calendar.getInstance());
+			
+			mDisplay.append("[" + currentDateTimeString + "]" + newMessage + "\n");
 		}
 	};
 
