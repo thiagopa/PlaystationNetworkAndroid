@@ -55,7 +55,13 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
-        String message = getString(R.string.gcm_message);
+        
+        String playing = intent.getStringExtra("Playing");
+        String psnId = intent.getStringExtra("PsnId");
+        String avatarSmall = intent.getStringExtra("AvatarSmall");
+        
+        String message = psnId + " is playing " + playing;
+        
         displayMessage(context, message);
         // notifies user
         generateNotification(context, message);
