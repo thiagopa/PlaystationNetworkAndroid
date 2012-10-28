@@ -54,9 +54,8 @@ public final class ServerUtilities {
      */
     static void register(final Context context, final String regId) {
         Log.i(TAG, "registering device (regId = " + regId + ")");
-        String serverUrl = SERVER_URL + "/register";
         Map<String, String> params = new HashMap<String, String>();
-        params.put("regId", regId);
+        params.put("key", regId);
         long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
         // Once GCM returns a registration id, we need to register it in the
         // demo server. As the server might be down, we will retry it a couple
@@ -66,7 +65,7 @@ public final class ServerUtilities {
             try {
                 displayMessage(context, context.getString(
                         R.string.server_registering, i, MAX_ATTEMPTS));
-                request(POST,serverUrl, params);
+                request(POST,SERVER_URL, params);
                 GCMRegistrar.setRegisteredOnServer(context, true);
                 String message = context.getString(R.string.server_registered);
                 CommonUtilities.displayMessage(context, message);
@@ -102,11 +101,10 @@ public final class ServerUtilities {
      */
     static void unregister(final Context context, final String regId) {
         Log.i(TAG, "unregistering device (regId = " + regId + ")");
-        String serverUrl = SERVER_URL + "/unregister";
         Map<String, String> params = new HashMap<String, String>();
-        params.put("regId", regId);
+        params.put("key", regId);
         try {
-            request(DELETE,serverUrl, params);
+            request(DELETE,SERVER_URL, params);
             GCMRegistrar.setRegisteredOnServer(context, false);
             String message = context.getString(R.string.server_unregistered);
             CommonUtilities.displayMessage(context, message);
