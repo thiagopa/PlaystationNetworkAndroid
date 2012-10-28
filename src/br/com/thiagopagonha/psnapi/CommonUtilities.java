@@ -32,7 +32,7 @@ public final class CommonUtilities {
     /**
      * Google API project id registered to use GCM.
      */
-    static final String SENDER_ID = "psnserverpythonapigcm";
+    static final String SENDER_ID = "175162298723";
 
     /**
      * Tag used on log messages.
