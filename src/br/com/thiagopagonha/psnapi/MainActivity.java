@@ -31,13 +31,12 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		checkNotNull(SERVER_URL, "SERVER_URL");
-//		checkNotNull(SENDER_ID, "SENDER_ID");
-//		// Make sure the device has the proper dependencies.
-//		GCMRegistrar.checkDevice(this);
-//		// Make sure the manifest was properly set - comment out this line
-//		// while developing the app, then uncomment it when it's ready.
-//		GCMRegistrar.checkManifest(this);
+		// Make sure the device has the proper dependencies.
+		GCMRegistrar.checkDevice(this);
+		// Make sure the manifest was properly set - comment out this line
+		// while developing the app, then uncomment it when it's ready.
+		GCMRegistrar.checkManifest(this);
+		
 		setContentView(R.layout.activity_main);
 		mDisplay = (TextView) findViewById(R.id.display);
 		registerReceiver(mHandleMessageReceiver, new IntentFilter(
@@ -115,13 +114,6 @@ public class MainActivity extends Activity {
 		unregisterReceiver(mHandleMessageReceiver);
 		GCMRegistrar.onDestroy(this);
 		super.onDestroy();
-	}
-
-	private void checkNotNull(Object reference, String name) {
-		if (reference == null) {
-			throw new NullPointerException(getString(R.string.error_config,
-					name));
-		}
 	}
 
 	private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
