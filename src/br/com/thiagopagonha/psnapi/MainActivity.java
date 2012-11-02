@@ -1,12 +1,14 @@
 package br.com.thiagopagonha.psnapi;
 
-import static br.com.thiagopagonha.psnapi.CommonUtilities.DISPLAY_MESSAGE_ACTION;
+import static br.com.thiagopagonha.psnapi.CommonUtilities.*;
 import static br.com.thiagopagonha.psnapi.CommonUtilities.EXTRA_MESSAGE;
 import static br.com.thiagopagonha.psnapi.CommonUtilities.SENDER_ID;
-import static br.com.thiagopagonha.psnapi.CommonUtilities.SERVER_URL;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.GregorianCalendar;
 
 import android.app.Activity;
@@ -17,6 +19,7 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ import com.google.android.gcm.GCMRegistrar;
 
 public class MainActivity extends Activity {
 
+	
 	TextView mDisplay;
 	AsyncTask<Void, Void, Void> mRegisterTask;
 
@@ -39,6 +43,7 @@ public class MainActivity extends Activity {
 		
 		setContentView(R.layout.activity_main);
 		mDisplay = (TextView) findViewById(R.id.display);
+		
 		registerReceiver(mHandleMessageReceiver, new IntentFilter(
 				DISPLAY_MESSAGE_ACTION));
 		final String regId = GCMRegistrar.getRegistrationId(this);
@@ -47,10 +52,7 @@ public class MainActivity extends Activity {
 			GCMRegistrar.register(this, SENDER_ID);
 		} else {
 			// Device is already registered on GCM, check server.
-			if (GCMRegistrar.isRegisteredOnServer(this)) {
-				// Skips registration.
-				mDisplay.append(getString(R.string.already_registered) + "\n");
-			} else {
+			if (!GCMRegistrar.isRegisteredOnServer(this)) {
 				// Try to register again, but not in the UI thread.
 				// It's also necessary to cancel the thread onDestroy(),
 				// hence the use of AsyncTask instead of a raw thread.
@@ -72,6 +74,7 @@ public class MainActivity extends Activity {
 				mRegisterTask.execute(null, null, null);
 			}
 		}
+		refreshView();
 	}
 
 	@Override
@@ -96,7 +99,7 @@ public class MainActivity extends Activity {
 		 * GCMRegistrar.unregister(this); return true;
 		 */
 		case R.id.options_clear:
-			mDisplay.setText(null);
+			clearLog();
 			return true;
 		case R.id.options_exit:
 			finish();
@@ -114,6 +117,7 @@ public class MainActivity extends Activity {
 		unregisterReceiver(mHandleMessageReceiver);
 		GCMRegistrar.onDestroy(this);
 		super.onDestroy();
+		
 	}
 
 	private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
@@ -123,8 +127,62 @@ public class MainActivity extends Activity {
 			
 			String currentDateTimeString = DateFormat.getTimeFormat(context).format(GregorianCalendar.getInstance().getTime());
 			
-			mDisplay.append("[" + currentDateTimeString + "]" + newMessage + "\n");
+			appendLog("[" + currentDateTimeString + "]" + newMessage + "\n");
+			
+			refreshView();
 		}
 	};
+	
+	
+	private static final String FILENAME = "friends.txt";
+
+	private String readLog()  {
+		
+		InputStream inputStream;
+		try {
+			inputStream = openFileInput(FILENAME);
+	     
+		    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		     
+		    int i;
+		    i = inputStream.read();
+		    while (i != -1) {
+		    	byteArrayOutputStream.write(i);
+		    	i = inputStream.read();
+		    } 
+		    inputStream.close();
+		    
+		    return byteArrayOutputStream.toString();
+		} catch(IOException io) {
+			Log.e(TAG, "Não foi possível ler arquivo de log");
+		}
+	  
+	    return null;
+	}
+	
+
+	private void clearLog()  {
+		try {
+			openFileOutput(FILENAME, MODE_PRIVATE);
+			refreshView();
+		} catch (FileNotFoundException e) {
+			Log.e(TAG, "Não foi possível reiniciar arquivo de log");
+		}
+	}
+	
+	private void appendLog(String toBeLogged)  {
+		try {
+			FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+			fos.write(toBeLogged.getBytes());
+			fos.close();
+		} catch (IOException io) {
+			Log.e(TAG, "Não foi possível atualizar arquivo de log");
+		}
+	}
+	
+	private void refreshView() {
+		mDisplay.setText(readLog());
+	}
+	
 
 }

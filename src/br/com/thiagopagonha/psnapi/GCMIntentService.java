@@ -64,17 +64,18 @@ public class GCMIntentService extends GCMBaseIntentService {
         
         displayMessage(context, message);
         // notifies user
-        generateNotification(context, message);
+        // generateNotification(context, message,ImageCache.getImage(avatarSmall));
+        generateNotification(context, message, R.drawable.ic_launcher);
     }
 
-    @Override
-    protected void onDeletedMessages(Context context, int total) {
-        Log.i(TAG, "Received deleted messages notification");
-        String message = getString(R.string.gcm_deleted, total);
-        displayMessage(context, message);
-        // notifies user
-        generateNotification(context, message);
-    }
+//    @Override
+//    protected void onDeletedMessages(Context context, int total) {
+//        Log.i(TAG, "Received deleted messages notification");
+//        String message = getString(R.string.gcm_deleted, total);
+//        displayMessage(context, message);
+//        // notifies user
+//        generateNotification(context, message);
+//    }
 
     @Override
     public void onError(Context context, String errorId) {
@@ -94,8 +95,8 @@ public class GCMIntentService extends GCMBaseIntentService {
     /**
      * Issues a notification to inform the user that server has sent a message.
      */
-    private static void generateNotification(Context context, String message) {
-        int icon = R.drawable.ic_launcher;
+    private static void generateNotification(Context context, String message, int icon) {
+        
         long when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
