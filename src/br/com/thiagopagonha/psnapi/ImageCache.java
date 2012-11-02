@@ -9,6 +9,7 @@ import java.net.URL;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 
 /**
  * Image cache resolver
@@ -22,8 +23,8 @@ public class ImageCache {
 		String fileName = md5sum(avatar);
 		
 		//Next create a file, the example below will save to the SDCARD using JPEG format
-		File file = new File("/sdcard/psnapi/" +  fileName +"png");
-
+		File file = new File(Environment.getExternalStorageDirectory() +  fileName + ".png");
+ 
 		//Next create a Bitmap object and download the image to bitmap
 		Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
 
