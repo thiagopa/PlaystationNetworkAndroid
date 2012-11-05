@@ -62,7 +62,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="br.com.thiagopagonha.psnapi.gcm" />
+                <category android:name="br.com.thiagopagonha.psnapi" />
             </intent-filter>
         </receiver>
 
@@ -73,7 +73,7 @@
           By default, it must be named .GCMIntentService, unless the
           application uses a custom BroadcastReceiver that redefines its name.
         -->
-        <service android:name="br.com.thiagopagonha.psnapi.gcm.GCMIntentService" />
+        <service android:name=".GCMIntentService" />
         <activity android:name="MessageActivity"></activity>
         <activity android:name="FriendActivity"></activity>
         

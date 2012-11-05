@@ -32,7 +32,7 @@ public class MainActivity extends ActivityGroup {
 		spec = tabHost.newTabSpec("1").setIndicator(getString(R.string.history), res.getDrawable(R.drawable.clock)).setContent(intent);
 		tabHost.addTab(spec);
 
-		tabHost.setCurrentTab(0);
+		tabHost.setCurrentTab(1);
 
 	}
 

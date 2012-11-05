@@ -49,6 +49,9 @@ public class MessageActivity extends Activity {
 		registerReceiver(mHandleMessageReceiver, new IntentFilter(
 				DISPLAY_MESSAGE_ACTION));
 		final String regId = GCMRegistrar.getRegistrationId(this);
+		
+		Log.d(TAG,"Registration ID:" + regId);
+		
 		if (regId.equals("")) {
 			// Automatically registers application on startup.
 			GCMRegistrar.register(this, SENDER_ID);
@@ -93,6 +96,9 @@ public class MessageActivity extends Activity {
 		case R.id.options_clear:
 			clearLog();
 			return true;
+		case R.id.options_unregister:
+			GCMRegistrar.unregister(this);
+            return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

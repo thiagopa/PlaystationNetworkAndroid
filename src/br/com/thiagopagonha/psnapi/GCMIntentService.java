@@ -1,4 +1,4 @@
-package br.com.thiagopagonha.psnapi.gcm;
+package br.com.thiagopagonha.psnapi;
 
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.SENDER_ID;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.displayMessage;
@@ -8,13 +8,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import br.com.thiagopagonha.psnapi.MainActivity;
 import br.com.thiagopagonha.psnapi.R;
+import br.com.thiagopagonha.psnapi.gcm.ServerUtilities;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
 /**
  * IntentService responsible for handling GCM messages.
+ * 
+ * AVISO:
+ * 
+ * Essa merda de classe tem que ficar no mesmo pacote da permissão do CD2_MESSAGE
+ * declarada no AndroidManifest.xml !!!
+ * 
  */
 public class GCMIntentService extends GCMBaseIntentService {
 
