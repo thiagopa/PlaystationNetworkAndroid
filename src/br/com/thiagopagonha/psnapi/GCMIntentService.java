@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.util.Log;
 import br.com.thiagopagonha.psnapi.R;
 import br.com.thiagopagonha.psnapi.gcm.ServerUtilities;
+import br.com.thiagopagonha.psnapi.model.FriendsDBHelper;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
@@ -56,7 +57,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         // -- Mostra Mensagem no Log
         displayMessage(context, message);
-        // -- Atualiza Jogo do amigo
+        // -- Atualiza Informações do amigo
         updateUserInfo(psnId,playing,avatarSmall);
         // -- Gera Notificação para o Usuário
         generateNotification(context, message);
@@ -65,8 +66,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     private void updateUserInfo(String psnId, String playing, String avatarSmall) {
 		// -- Dicionário no SQLite
-    	
-    	
+    	new FriendsDBHelper(getApplicationContext()).saveFriend(psnId, playing, avatarSmall);
     	
 	}
 
