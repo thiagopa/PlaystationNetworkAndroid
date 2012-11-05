@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.thiagopagonha.psnapi;
+package br.com.thiagopagonha.psnapi.gcm;
 
-import static br.com.thiagopagonha.psnapi.CommonUtilities.SERVER_URL;
-import static br.com.thiagopagonha.psnapi.CommonUtilities.TAG;
-import static br.com.thiagopagonha.psnapi.CommonUtilities.displayMessage;
-import static br.com.thiagopagonha.psnapi.Method.DELETE;
-import static br.com.thiagopagonha.psnapi.Method.POST;
+import static br.com.thiagopagonha.psnapi.gcm.Method.DELETE;
+import static br.com.thiagopagonha.psnapi.gcm.Method.POST;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.SERVER_URL;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.displayMessage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,6 +36,8 @@ import java.util.Random;
 
 import android.content.Context;
 import android.util.Log;
+import br.com.thiagopagonha.psnapi.R;
+import br.com.thiagopagonha.psnapi.utils.CommonUtilities;
 
 import com.google.android.gcm.GCMRegistrar;
 
@@ -52,7 +54,7 @@ public final class ServerUtilities {
      * Register this account/device pair within the server.
      *
      */
-    static void register(final Context context, final String regId) {
+    public static void register(final Context context, final String regId) {
         Log.i(TAG, "registering device (regId = " + regId + ")");
         Map<String, String> params = new HashMap<String, String>();
         params.put("key", regId);

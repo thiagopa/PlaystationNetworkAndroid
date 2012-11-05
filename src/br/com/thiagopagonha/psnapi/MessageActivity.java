@@ -1,9 +1,9 @@
 package br.com.thiagopagonha.psnapi;
 
-import static br.com.thiagopagonha.psnapi.CommonUtilities.DISPLAY_MESSAGE_ACTION;
-import static br.com.thiagopagonha.psnapi.CommonUtilities.EXTRA_MESSAGE;
-import static br.com.thiagopagonha.psnapi.CommonUtilities.SENDER_ID;
-import static br.com.thiagopagonha.psnapi.CommonUtilities.TAG;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.DISPLAY_MESSAGE_ACTION;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.EXTRA_MESSAGE;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.SENDER_ID;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.GregorianCalendar;
+
+import br.com.thiagopagonha.psnapi.gcm.ServerUtilities;
 
 import com.google.android.gcm.GCMRegistrar;
 
@@ -80,17 +82,7 @@ public class MessageActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_message, menu);
-		return true;		/*
-		 * Typically, an application registers automatically, so options below
-		 * are disabled. Uncomment them if you want to manually register or
-		 * unregister the device (you will also need to uncomment the equivalent
-		 * options on options_menu.xml).
-		 */
-		/*
-		 * case R.id.options_register: GCMRegistrar.register(this, SENDER_ID);
-		 * return true; case R.id.options_unregister:
-		 * GCMRegistrar.unregister(this); return true;
-		 */
+		return true;		
 
 	}
 

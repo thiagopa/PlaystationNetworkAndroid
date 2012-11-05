@@ -1,28 +1,15 @@
-/*
- * Copyright 2012 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package br.com.thiagopagonha.psnapi;
+package br.com.thiagopagonha.psnapi.gcm;
 
-import static br.com.thiagopagonha.psnapi.CommonUtilities.*;
-
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.SENDER_ID;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.displayMessage;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import br.com.thiagopagonha.psnapi.MainActivity;
+import br.com.thiagopagonha.psnapi.R;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
@@ -31,7 +18,6 @@ import com.google.android.gcm.GCMBaseIntentService;
  */
 public class GCMIntentService extends GCMBaseIntentService {
 
-    @SuppressWarnings("hiding")
     private static final String TAG = "GCMIntentService";
 
     public GCMIntentService() {
@@ -61,21 +47,31 @@ public class GCMIntentService extends GCMBaseIntentService {
         String avatarSmall = intent.getStringExtra("AvatarSmall");
         
         String message = psnId + " is playing " + playing;
-        
+
+        // -- Mostra Mensagem no Log
         displayMessage(context, message);
-        // notifies user
-        // generateNotification(context, message,ImageCache.getImage(avatarSmall));
-        generateNotification(context, message, R.drawable.ic_launcher);
+        // -- Atualiza Jogo do amigo
+        updateUserInfo(psnId,playing,avatarSmall);
+        // -- Gera Notificação para o Usuário
+        generateNotification(context, message);
+        
     }
 
-//    @Override
-//    protected void onDeletedMessages(Context context, int total) {
-//        Log.i(TAG, "Received deleted messages notification");
-//        String message = getString(R.string.gcm_deleted, total);
-//        displayMessage(context, message);
-//        // notifies user
-//        generateNotification(context, message);
-//    }
+    private void updateUserInfo(String psnId, String playing, String avatarSmall) {
+		// -- Dicionário no SQLite
+    	
+    	
+    	
+	}
+
+	@Override
+    protected void onDeletedMessages(Context context, int total) {
+        Log.i(TAG, "Received deleted messages notification");
+        String message = getString(R.string.gcm_deleted, total);
+        displayMessage(context, message);
+        // notifies user
+        generateNotification(context, message);
+    }
 
     @Override
     public void onError(Context context, String errorId) {
@@ -95,8 +91,10 @@ public class GCMIntentService extends GCMBaseIntentService {
     /**
      * Issues a notification to inform the user that server has sent a message.
      */
-    private static void generateNotification(Context context, String message, int icon) {
+    private static void generateNotification(Context context, String message) {
         
+    	int icon = R.drawable.ic_launcher;
+    	
         long when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);

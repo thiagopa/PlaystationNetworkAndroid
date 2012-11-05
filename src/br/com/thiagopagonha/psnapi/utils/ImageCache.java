@@ -1,9 +1,12 @@
-package br.com.thiagopagonha.psnapi;
+package br.com.thiagopagonha.psnapi.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+
+import br.com.thiagopagonha.psnapi.R;
+import br.com.thiagopagonha.psnapi.R.drawable;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,7 +15,7 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
-import static br.com.thiagopagonha.psnapi.CommonUtilities.TAG;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
 
 /**
  * Image cache resolver
