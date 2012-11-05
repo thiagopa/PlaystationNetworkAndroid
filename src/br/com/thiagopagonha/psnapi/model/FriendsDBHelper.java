@@ -47,6 +47,8 @@ public class FriendsDBHelper {
 			db.update(TABLE_NAME, values, where, null);
 		}
 		
+		db.close();
+		
 	}
 	
 	public List<Friend> getFriends() {
@@ -67,6 +69,7 @@ public class FriendsDBHelper {
 		}
 		
 		cursor.close();
+		db.close();
 		
 		return friends;
 	}

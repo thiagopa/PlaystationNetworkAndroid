@@ -65,7 +65,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     }
 
     private void updateUserInfo(String psnId, String playing, String avatarSmall) {
-		// -- Dicionário no SQLite
+	// -- Dicionário no SQLite
     	new FriendsDBHelper(getApplicationContext()).saveFriend(psnId, playing, avatarSmall);
     	
 	}
