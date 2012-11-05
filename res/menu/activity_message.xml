@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/options_clear"
+        android:title="@string/options_clear">
+    </item>
+</menu>
