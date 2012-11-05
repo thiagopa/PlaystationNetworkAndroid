@@ -35,13 +35,18 @@ public class FriendsDBHelper {
 
 		String where = "PSN_ID=" + psnId;
 		
-		boolean hasPsnId = db.query(TABLE_NAME, new String[] { "PSN_ID" }, where , null ,null,null,null).moveToFirst();
+		Cursor cursor = db.query(TABLE_NAME, new String[] { "PSN_ID" }, where , null ,null,null,null);
+		
+		boolean hasPsnId = cursor.moveToFirst();
+		
+		cursor.close();
 		
 		if(!hasPsnId) {
 			db.insert(TABLE_NAME, null, values);
 		} else {
 			db.update(TABLE_NAME, values, where, null);
 		}
+		
 	}
 	
 	public List<Friend> getFriends() {
@@ -60,6 +65,8 @@ public class FriendsDBHelper {
 			
 			friends.add(friend);
 		}
+		
+		cursor.close();
 		
 		return friends;
 	}
