@@ -20,7 +20,10 @@
     <string name="server_unregister_error">Could not unregister device on Demo Server (%1$s).</string>
     <string name="options_register">Register</string>
     <string name="options_unregister">Unregister</string>
-    <string name="options_clear">Clear</string>
-    <string name="options_exit">Exit</string>
+    <string name="options_clear">Limpar Log</string>
+    <string name="options_exit">Sair</string>
+    
+    <string name="friends">Amigos</string>
+    <string name="history">Histórico</string>
     
 </resources>

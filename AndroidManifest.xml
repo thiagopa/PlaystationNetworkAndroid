@@ -74,6 +74,8 @@
           application uses a custom BroadcastReceiver that redefines its name.
         -->
         <service android:name=".GCMIntentService" />
+        <activity android:name="MessageActivity"></activity>
+        <activity android:name="FriendActivity"></activity>
         
     </application>
 
