@@ -80,14 +80,7 @@ public class MessageActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_message, menu);
-		return true;
-	}
-
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		/*
+		return true;		/*
 		 * Typically, an application registers automatically, so options below
 		 * are disabled. Uncomment them if you want to manually register or
 		 * unregister the device (you will also need to uncomment the equivalent
@@ -98,6 +91,13 @@ public class MessageActivity extends Activity {
 		 * return true; case R.id.options_unregister:
 		 * GCMRegistrar.unregister(this); return true;
 		 */
+
+	}
+
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
 		case R.id.options_clear:
 			clearLog();
 			return true;
