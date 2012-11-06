@@ -73,7 +73,7 @@
           By default, it must be named .GCMIntentService, unless the
           application uses a custom BroadcastReceiver that redefines its name.
         -->
-        <service android:name=".GCMIntentService" />
+        <service android:name="br.com.thiagopagonha.psnapi.GCMIntentService" />
         <activity android:name="MessageActivity"></activity>
         <activity android:name="FriendActivity"></activity>
         

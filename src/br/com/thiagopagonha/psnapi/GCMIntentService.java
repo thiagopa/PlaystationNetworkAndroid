@@ -57,15 +57,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         // -- Mostra Mensagem no Log
         displayMessage(context, message);
-        // -- Atualiza Informações do amigo
-        updateUserInfo(psnId,playing,avatarSmall);
         // -- Gera Notificação para o Usuário
         generateNotification(context, message);
+        // -- Atualiza Informações do amigo
+        updateUserInfo(psnId,playing,avatarSmall);
         
     }
 
     private void updateUserInfo(String psnId, String playing, String avatarSmall) {
-	// -- Dicionário no SQLite
+    	// -- Dicionário no SQLite
+    	Log.d(TAG, "updateUserInfo");
     	new FriendsDBHelper(getApplicationContext()).saveFriend(psnId, playing, avatarSmall);
     	
 	}
@@ -98,7 +99,8 @@ public class GCMIntentService extends GCMBaseIntentService {
      * Issues a notification to inform the user that server has sent a message.
      */
     private static void generateNotification(Context context, String message) {
-        
+    	Log.d(TAG, "generateNotification");
+    	
     	int icon = R.drawable.ic_launcher;
     	
         long when = System.currentTimeMillis();

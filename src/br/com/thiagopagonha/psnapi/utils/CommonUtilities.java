@@ -3,6 +3,7 @@ package br.com.thiagopagonha.psnapi.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * Helper class providing methods and constants common to other classes in the
@@ -23,7 +24,7 @@ public final class CommonUtilities {
     /**
      * Tag used on log messages.
      */
-    public static final String TAG = "psn_android";
+    public static final String TAG = "br.com.thiagopagonha.psnapi";
 
     /**
      * Intent used to display a message in the screen.
@@ -46,7 +47,8 @@ public final class CommonUtilities {
      * @param message message to be displayed.
      */
     public static void displayMessage(Context context, String message) {
-        Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
+        Log.d(TAG, "displayMessage");
+    	Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
         intent.putExtra(EXTRA_MESSAGE, message);
         context.sendBroadcast(intent);
     }

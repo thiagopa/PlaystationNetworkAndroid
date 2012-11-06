@@ -48,6 +48,9 @@ public class MessageActivity extends Activity {
 		
 		registerReceiver(mHandleMessageReceiver, new IntentFilter(
 				DISPLAY_MESSAGE_ACTION));
+		
+		Log.d(TAG, "Registered Message Handler");
+		
 		final String regId = GCMRegistrar.getRegistrationId(this);
 		
 		Log.d(TAG,"Registration ID:" + regId);
@@ -122,7 +125,7 @@ public class MessageActivity extends Activity {
 			
 			String currentDateTimeString = DateFormat.getTimeFormat(context).format(GregorianCalendar.getInstance().getTime());
 			
-			appendLog("[" + currentDateTimeString + "]" + newMessage + "\n");
+			appendLog("[" + currentDateTimeString + "] " + newMessage + "\n");
 			
 			refreshView();
 		}

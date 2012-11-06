@@ -24,11 +24,17 @@ public class FriendActivity extends Activity {
 			 TextView psnId = new TextView(this);
 			 psnId.setText(friend.getPsnId());
 
+			 TextView playing = new TextView(this);
+			 playing.setText(friend.getPlaying());
+			 
 			 // ImageCache.getImage(avatarSmall)
 			 
 			 row.addView(psnId);
-			 
+			 row.addView(playing);
+			 table.addView(row);
 		}
+		
+		 
 		 
 		setContentView(table);
 		

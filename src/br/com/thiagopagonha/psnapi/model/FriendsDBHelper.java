@@ -1,6 +1,7 @@
 package br.com.thiagopagonha.psnapi.model;
 
 import static br.com.thiagopagonha.psnapi.model.FriendsOpenHelper.TABLE_NAME;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 
 /**
@@ -33,7 +35,7 @@ public class FriendsDBHelper {
 		values.put("AVATAR_SMALL", avatarSmall);
 		values.put("UPDATED", "now");
 
-		String where = "PSN_ID=" + psnId;
+		String where = "PSN_ID=\"" + psnId + "\"";
 		
 		Cursor cursor = db.query(TABLE_NAME, new String[] { "PSN_ID" }, where , null ,null,null,null);
 		
@@ -55,7 +57,11 @@ public class FriendsDBHelper {
 		
 		Cursor cursor = db.rawQuery("select PSN_ID, PLAYING, AVATAR_SMALL, UPDATED from " + TABLE_NAME, null);
 
-		List<Friend> friends = new ArrayList<Friend>(cursor.getCount());
+		int size = cursor.getCount();
+		
+		Log.d(TAG,"Found " + size + " friends");
+		
+		List<Friend> friends = new ArrayList<Friend>(size);
 		
 		while(cursor.moveToNext()) {
 			Friend friend = new Friend();
