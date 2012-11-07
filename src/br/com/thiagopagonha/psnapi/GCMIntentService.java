@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.text.GetChars;
 import android.util.Log;
 import br.com.thiagopagonha.psnapi.R;
 import br.com.thiagopagonha.psnapi.gcm.ServerUtilities;
@@ -61,7 +62,6 @@ public class GCMIntentService extends GCMBaseIntentService {
         generateNotification(context, message);
         // -- Atualiza Informações do amigo
         updateUserInfo(psnId,playing,avatarSmall);
-        
     }
 
     private void updateUserInfo(String psnId, String playing, String avatarSmall) {

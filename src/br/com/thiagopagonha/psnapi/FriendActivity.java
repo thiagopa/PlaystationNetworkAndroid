@@ -1,6 +1,11 @@
 package br.com.thiagopagonha.psnapi;
 
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.*;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -13,8 +18,28 @@ public class FriendActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// -- Registra o Receiver para esse determinado evento
+		registerReceiver(refreshFriends, new IntentFilter(REFRESH_FRIENDS));
+	}
+
+	/**
+	 * Receiver que recebe a chamada sempre que chega uma mensagem nova
+	 */
+	private BroadcastReceiver refreshFriends = new BroadcastReceiver() {
 		
-		 TableLayout table = new TableLayout(this);  
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			renderView();
+		}
+	};
+	
+	/**
+	 * Desenha a Tela dos amigos com as Informações vindas
+	 * Diretamente da base de dados
+	 */
+	private void renderView() {
+		
+		TableLayout table = new TableLayout(this);  
 		 table.setStretchAllColumns(true);  
 		 table.setShrinkAllColumns(true);  
 		
@@ -34,10 +59,7 @@ public class FriendActivity extends Activity {
 			 table.addView(row);
 		}
 		
-		 
-		 
 		setContentView(table);
-		
 	}
 	
 }

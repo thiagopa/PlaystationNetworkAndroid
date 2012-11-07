@@ -11,7 +11,9 @@ import android.util.Log;
  */
 public final class CommonUtilities {
 
-    /**
+    public static final String REFRESH_FRIENDS = "br.com.thiagopagonha.psnapi.REFRESH_FRIENDS";
+
+	/**
      * Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
      */
     public static final String SERVER_URL = "http://psnservergcm.appspot.com/";
@@ -51,6 +53,7 @@ public final class CommonUtilities {
     	Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
         intent.putExtra(EXTRA_MESSAGE, message);
         context.sendBroadcast(intent);
+        context.sendBroadcast(new Intent(REFRESH_FRIENDS));
     }
     
     public static final String PREFS_NAME = "UserInfo";
