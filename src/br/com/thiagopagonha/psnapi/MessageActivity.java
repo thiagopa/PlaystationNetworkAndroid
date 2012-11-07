@@ -102,6 +102,9 @@ public class MessageActivity extends Activity {
 		case R.id.options_unregister:
 			GCMRegistrar.unregister(this);
             return true;
+		case R.id.options_sync:
+			ServerUtilities.sync(this);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

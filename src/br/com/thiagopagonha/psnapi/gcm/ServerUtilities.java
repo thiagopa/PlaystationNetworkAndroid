@@ -16,6 +16,7 @@
 package br.com.thiagopagonha.psnapi.gcm;
 
 import static br.com.thiagopagonha.psnapi.gcm.Method.DELETE;
+import static br.com.thiagopagonha.psnapi.gcm.Method.GET;
 import static br.com.thiagopagonha.psnapi.gcm.Method.POST;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.SERVER_URL;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
@@ -50,6 +51,20 @@ public final class ServerUtilities {
     private static final int BACKOFF_MILLI_SECONDS = 2000;
     private static final Random random = new Random();
 
+    /**
+     * Manda uma requisição pro servidor, solicitando uma atualização de status
+     * Mas essa atualização é somente um ping, irá vir pelo C2M normalmente
+     * @param context
+     */
+    public static void sync(final Context context) {
+    	Log.i(TAG, "Sync device");
+    	try {
+			request(GET,SERVER_URL + "whosonline", null);
+		} catch (IOException e) {
+			displayMessage(context, context.getString(R.string.server_sync_error));		
+		}
+    }
+    
     /**
      * Register this account/device pair within the server.
      *
@@ -132,19 +147,22 @@ public final class ServerUtilities {
      */
     private static void request(Method method,String endpoint, Map<String, String> params)
             throws IOException {
- 
-        StringBuilder bodyBuilder = new StringBuilder();
-        Iterator<Entry<String, String>> iterator = params.entrySet().iterator();
-        // constructs the POST body using the parameters
-        while (iterator.hasNext()) {
-            Entry<String, String> param = iterator.next();
-            bodyBuilder.append(param.getKey()).append('=')
-                    .append(param.getValue());
-            if (iterator.hasNext()) {
-                bodyBuilder.append('&');
-            }
+    	String body = null;
+        if(params!= null && !params.isEmpty()) {
+        	StringBuilder bodyBuilder = new StringBuilder();
+        	Iterator<Entry<String, String>> iterator = params.entrySet().iterator();
+        	// 	constructs the POST body using the parameters
+        	while (iterator.hasNext()) {
+        		Entry<String, String> param = iterator.next();
+        		bodyBuilder.append(param.getKey()).append('=')
+                    	.append(param.getValue());
+        		if (iterator.hasNext()) {
+        			bodyBuilder.append('&');
+        		}
+        	}
+        	
+        	body = bodyBuilder.toString();
         }
-        String body = bodyBuilder.toString();
         
         URL url;
         try {

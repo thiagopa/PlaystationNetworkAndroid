@@ -1,6 +1,7 @@
 package br.com.thiagopagonha.psnapi.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +23,7 @@ import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
  */
 public class ImageCache {
 
-	public static int getImage(String avatar) {
+	public static Bitmap getImage(String avatar) {
 		try {
 		
 			//First create a new URL object 
@@ -32,23 +33,34 @@ public class ImageCache {
 			
 			File file = new File(Environment.getExternalStorageDirectory(), fileName + ".png");
 
+			Log.d(TAG,"Url is" + avatar);
+			Log.d(TAG, "File is " + file.getAbsolutePath());
+			
 			if(!file.exists()) {
+				Log.d(TAG, "Downloading and decoding file");
 				//Next create a Bitmap object and download the image to bitmap
 				Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
 		
 				//Finally compress the bitmap, saving to the file previously created
 				bitmap.compress(CompressFormat.PNG, 100, new FileOutputStream(file));
+				
+				return bitmap;
 			}
 			
-			return  Resources.getSystem().getIdentifier(file.getAbsolutePath(), null, null);
+			return BitmapFactory.decodeStream(new FileInputStream(file));
+					
 		} catch(IOException io) {
 			Log.e(TAG, "Erro ao manipular os arquivos de imagem" );
 			Log.e(TAG, io.getMessage() );
-			
-			return R.drawable.ic_launcher;	
 		}
+		return null;
 	}
 	
+	/**
+	 * Gera um hash da url do arquivo
+	 * @param md5
+	 * @return
+	 */
 	private static String md5sum(String md5) {
 		   try {
 		        java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");

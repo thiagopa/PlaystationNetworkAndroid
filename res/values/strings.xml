@@ -18,12 +18,13 @@
     <string name="server_unregistered">From PSN Server: successfully removed device!</string>
     <string name="server_register_error">Could not register device on PSN Server after %1$d attempts.</string>
     <string name="server_unregister_error">Could not unregister device on PSN Server (%1$s).</string>
-    <string name="options_register">Register</string>
     <string name="options_unregister">Desregistrar</string>
     <string name="options_clear">Limpar Log</string>
-    <string name="options_exit">Sair</string>
+    <string name="options_sync">Atualizar Amigos</string>
     
     <string name="friends">Amigos</string>
     <string name="history">Histórico</string>
+    
+    <string name="server_sync_error">Erro ao sincronizar o dispositivo</string>
     
 </resources>

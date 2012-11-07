@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import br.com.thiagopagonha.psnapi.model.Friend;
 import br.com.thiagopagonha.psnapi.model.FriendsDBHelper;
+import br.com.thiagopagonha.psnapi.utils.ImageCache;
 
 public class FriendActivity extends Activity {
 
@@ -20,6 +22,8 @@ public class FriendActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		// -- Registra o Receiver para esse determinado evento
 		registerReceiver(refreshFriends, new IntentFilter(REFRESH_FRIENDS));
+		// -- Desenha a Tela
+		renderView();
 	}
 
 	/**
@@ -40,20 +44,24 @@ public class FriendActivity extends Activity {
 	private void renderView() {
 		
 		TableLayout table = new TableLayout(this);  
-		 table.setStretchAllColumns(true);  
-		 table.setShrinkAllColumns(true);  
+		table.setStretchAllColumns(true);  
+		table.setShrinkAllColumns(true);  
 		
 		 
 		 for (Friend friend : new FriendsDBHelper(getApplicationContext()).getFriends()) {
 			 TableRow row = new TableRow(this);
+			 
+			 ImageView avatar = new ImageView(this);
+			 avatar.setImageBitmap( ImageCache.getImage(friend.getAvatarSmall()) );
+			 
 			 TextView psnId = new TextView(this);
 			 psnId.setText(friend.getPsnId());
 
 			 TextView playing = new TextView(this);
 			 playing.setText(friend.getPlaying());
 			 
-			 // ImageCache.getImage(avatarSmall)
-			 
+
+			 row.addView(avatar);
 			 row.addView(psnId);
 			 row.addView(playing);
 			 table.addView(row);
