@@ -2,8 +2,10 @@ package br.com.thiagopagonha.psnapi.model;
 
 import static br.com.thiagopagonha.psnapi.model.FriendsOpenHelper.TABLE_NAME;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.convertDate;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -33,7 +35,7 @@ public class FriendsDBHelper {
 		values.put("PSN_ID", psnId);
 		values.put("PLAYING", playing);
 		values.put("AVATAR_SMALL", avatarSmall);
-		values.put("UPDATED", "now");
+		values.put("UPDATED", GregorianCalendar.getInstance().getTime().toString());
 
 		String where = "PSN_ID=\"" + psnId + "\"";
 		
@@ -69,7 +71,7 @@ public class FriendsDBHelper {
 			friend.setPsnId(cursor.getString(0));
 			friend.setPlaying(cursor.getString(1));
 			friend.setAvatarSmall(cursor.getString(2));
-			//friend.setUpdated(cursor.getString(columnIndex))
+			friend.setUpdated(convertDate(cursor.getString(3)));
 			
 			friends.add(friend);
 		}
@@ -79,5 +81,4 @@ public class FriendsDBHelper {
 		
 		return friends;
 	}
-
 }
