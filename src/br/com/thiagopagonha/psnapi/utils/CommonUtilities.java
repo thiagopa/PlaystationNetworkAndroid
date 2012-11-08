@@ -1,6 +1,9 @@
 
 package br.com.thiagopagonha.psnapi.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -57,4 +60,22 @@ public final class CommonUtilities {
     }
     
     public static final String PREFS_NAME = "UserInfo";
+    
+	/**
+	 * Converte uma data padrão String em util.Date
+	 * @param dateToFormat
+	 * @return
+	 */
+	public static Date convertDate(String dateToFormat) {
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		Date date = null;
+		try {
+			date = dateFormat.parse(dateToFormat);
+		} catch (java.text.ParseException e) {
+			date = null;
+		}
+		return date;
+	}
+
 }
