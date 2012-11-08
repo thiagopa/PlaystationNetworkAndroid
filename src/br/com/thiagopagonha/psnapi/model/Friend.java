@@ -2,6 +2,7 @@ package br.com.thiagopagonha.psnapi.model;
 
 import java.util.Date;
 
+
 public class Friend {
 	private String psnId;
 	private String playing;
