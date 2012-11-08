@@ -30,7 +30,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MessageActivity extends Activity {
-	
+
 	TextView mDisplay;
 	AsyncTask<Void, Void, Void> mRegisterTask;
 
@@ -65,26 +65,44 @@ public class MessageActivity extends Activity {
 				// It's also necessary to cancel the thread onDestroy(),
 				// hence the use of AsyncTask instead of a raw thread.
 				final Context context = this;
-				mRegisterTask = new AsyncTask<Void, Void, Void>() {
-
-					@Override
-					protected Void doInBackground(Void... params) {
+				backGround(new Fragment() {
+					void execute() {
 						ServerUtilities.register(context, regId);
-						return null;
 					}
-
-					@Override
-					protected void onPostExecute(Void result) {
-						mRegisterTask = null;
-					}
-
-				};
-				mRegisterTask.execute(null, null, null);
+				});
 			}
 		}
 		refreshView();
 	}
 
+	// -- Lógica abaixo
+	abstract class Fragment {
+		abstract void execute();
+	}
+	
+	/**
+	 * Executa uma tarefa em background
+	 * @param f
+	 */
+	private void backGround(final Fragment f) {
+		mRegisterTask = new AsyncTask<Void, Void, Void>() {
+
+			@Override
+			protected Void doInBackground(Void... params) {
+				f.execute();
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+				mRegisterTask = null;
+			}
+
+		};
+		mRegisterTask.execute(null, null, null);
+	}
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_message, menu);
@@ -103,7 +121,13 @@ public class MessageActivity extends Activity {
 			GCMRegistrar.unregister(this);
             return true;
 		case R.id.options_sync:
-			ServerUtilities.sync(this);
+			final Context context = this;
+			backGround(new Fragment() {
+				void execute() {
+					ServerUtilities.sync(context);
+				}
+			});
+			
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
