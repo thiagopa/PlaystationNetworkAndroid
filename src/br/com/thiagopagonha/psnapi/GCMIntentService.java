@@ -58,17 +58,18 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         // -- Mostra Mensagem no Log
         displayMessage(context, message);
-        // -- Gera Notificação para o Usuário
-        generateNotification(context, message);
         // -- Atualiza Informações do amigo
-        updateUserInfo(psnId,playing,avatarSmall);
+        if(!updateUserInfo(psnId,playing,avatarSmall)) {
+        	// -- Só gera notificação para o usuário caso não seja o mesmo jogo
+        	generateNotification(context, message);
+        }
+
     }
 
-    private void updateUserInfo(String psnId, String playing, String avatarSmall) {
+    private boolean updateUserInfo(String psnId, String playing, String avatarSmall) {
     	// -- Dicionário no SQLite
     	Log.d(TAG, "updateUserInfo");
-    	new FriendsDBHelper(getApplicationContext()).saveFriend(psnId, playing, avatarSmall);
-    	
+    	return new FriendsDBHelper(getApplicationContext()).saveFriend(psnId, playing, avatarSmall);
 	}
 
 	@Override

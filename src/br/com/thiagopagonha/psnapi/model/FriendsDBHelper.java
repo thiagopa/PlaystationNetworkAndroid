@@ -30,7 +30,14 @@ public class FriendsDBHelper {
 		db = helper.getdb();
 	}
 
-	public void saveFriend(String psnId, String playing, String avatarSmall) {
+	/**
+	 * Insere ou Atualiza um amigo e ainda de quebra verifica se é o mesmo jogo
+	 * @param psnId
+	 * @param playing
+	 * @param avatarSmall
+	 * @return <true> se for o mesmo jogo
+	 */
+	public boolean saveFriend(String psnId, String playing, String avatarSmall) {
 		ContentValues values = new ContentValues();
 		values.put("PSN_ID", psnId);
 		values.put("PLAYING", playing);
@@ -43,6 +50,8 @@ public class FriendsDBHelper {
 		
 		boolean hasPsnId = cursor.moveToFirst();
 		
+		boolean isSameGame = hasPsnId && playing.equals(cursor.getString(1));
+		
 		cursor.close();
 		
 		if(!hasPsnId) {
@@ -52,6 +61,8 @@ public class FriendsDBHelper {
 		}
 		
 		db.close();
+		
+		return isSameGame;
 		
 	}
 	
