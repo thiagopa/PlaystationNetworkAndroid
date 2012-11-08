@@ -7,9 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.text.GetChars;
 import android.util.Log;
-import br.com.thiagopagonha.psnapi.R;
 import br.com.thiagopagonha.psnapi.gcm.ServerUtilities;
 import br.com.thiagopagonha.psnapi.model.FriendsDBHelper;
 
@@ -69,7 +67,10 @@ public class GCMIntentService extends GCMBaseIntentService {
     private boolean updateUserInfo(String psnId, String playing, String avatarSmall) {
     	// -- Dicionário no SQLite
     	Log.d(TAG, "updateUserInfo");
-    	return new FriendsDBHelper(getApplicationContext()).saveFriend(psnId, playing, avatarSmall);
+    	FriendsDBHelper friendsDBHelper = new FriendsDBHelper(getApplicationContext());
+		boolean sameGame = friendsDBHelper.saveFriend(psnId, playing, avatarSmall);
+		friendsDBHelper.close();
+		return sameGame;
 	}
 
 	@Override

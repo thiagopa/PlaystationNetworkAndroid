@@ -60,8 +60,6 @@ public class FriendsDBHelper {
 			db.update(TABLE_NAME, values, where, null);
 		}
 		
-		db.close();
-		
 		return isSameGame;
 		
 	}
@@ -88,8 +86,12 @@ public class FriendsDBHelper {
 		}
 		
 		cursor.close();
-		db.close();
 		
 		return friends;
 	}
+
+	public void close() {
+		db.close();
+	}
+	
 }
