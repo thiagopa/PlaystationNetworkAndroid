@@ -50,7 +50,7 @@ public class FriendsDBHelper {
 		
 		boolean hasPsnId = cursor.moveToFirst();
 		
-		boolean isSameGame = hasPsnId && playing.equals(cursor.getString(1));
+		boolean isSameGame = hasPsnId && playing.equals(cursor.getString(0));
 		
 		cursor.close();
 		

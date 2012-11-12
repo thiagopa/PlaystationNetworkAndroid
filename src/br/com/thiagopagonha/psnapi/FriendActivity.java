@@ -87,7 +87,7 @@ public class FriendActivity extends Activity {
 	    	friendsDBHelper.close();
 	    	
 	      }
-	    }, 0, 1, TimeUnit.MINUTES);
+	    }, 0, 20, TimeUnit.MINUTES);
 	}
 
 	// -- Necessário, mesmo :P
