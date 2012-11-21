@@ -56,7 +56,6 @@ public final class CommonUtilities {
     	Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
         intent.putExtra(EXTRA_MESSAGE, message);
         context.sendBroadcast(intent);
-        context.sendBroadcast(new Intent(REFRESH_FRIENDS));
     }
     
     public static final String PREFS_NAME = "UserInfo";
