@@ -3,7 +3,6 @@ package br.com.thiagopagonha.psnapi;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.REFRESH_FRIENDS;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
 
-import java.util.GregorianCalendar;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +39,7 @@ public class FriendActivity extends Activity {
 		// -- Desenha a Tela
 		renderView();
 		// -- Cria o executor pra verificar o status dos amigos
-		scheduleTaskExecutor= Executors.newScheduledThreadPool(5);
+		scheduleTaskExecutor= Executors.newScheduledThreadPool(1);
 		// This schedule a task to run every 15 minutes:
 	    // -- Lógica que verifica se o amigo está ou não mais online
 		scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {

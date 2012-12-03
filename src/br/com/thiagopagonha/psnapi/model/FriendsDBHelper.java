@@ -46,11 +46,11 @@ public class FriendsDBHelper {
 
 		String where = "PSN_ID=\"" + psnId + "\"";
 		
-		Cursor cursor = db.query(TABLE_NAME, new String[] { "PSN_ID" }, where , null ,null,null,null);
+		Cursor cursor = db.query(TABLE_NAME, new String[] { "PSN_ID" , "PLAYING" }, where , null ,null,null,null);
 		
 		boolean hasPsnId = cursor.moveToFirst();
 		
-		boolean isSameGame = hasPsnId && playing.equals(cursor.getString(0));
+		boolean isSameGame = hasPsnId && playing.equals(cursor.getString(1));
 		
 		cursor.close();
 		

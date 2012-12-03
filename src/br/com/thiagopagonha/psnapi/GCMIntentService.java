@@ -1,5 +1,6 @@
 package br.com.thiagopagonha.psnapi;
 
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.REFRESH_FRIENDS;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.SENDER_ID;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.displayMessage;
 import android.app.Notification;
@@ -58,6 +59,8 @@ public class GCMIntentService extends GCMBaseIntentService {
         displayMessage(context, message);
         // -- Atualiza Informações do amigo
         if(!updateUserInfo(psnId,playing,avatarSmall)) {
+        	// -- Manda atualizar a view
+        	context.sendBroadcast(new Intent(REFRESH_FRIENDS));
         	// -- Só gera notificação para o usuário caso não seja o mesmo jogo
         	generateNotification(context, message);
         }
