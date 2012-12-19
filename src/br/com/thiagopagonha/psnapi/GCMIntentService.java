@@ -8,6 +8,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import br.com.thiagopagonha.psnapi.gcm.ServerUtilities;
 import br.com.thiagopagonha.psnapi.model.FriendsDBHelper;
@@ -106,24 +109,30 @@ public class GCMIntentService extends GCMBaseIntentService {
     private static void generateNotification(Context context, String message) {
     	Log.d(TAG, "generateNotification");
     	
-    	int icon = R.drawable.ic_launcher;
+    	Intent notificationIntent = new Intent(context, FriendActivity.class);
+    	PendingIntent contentIntent = PendingIntent.getActivity(context,
+    	        0, notificationIntent,
+    	        PendingIntent.FLAG_CANCEL_CURRENT);
+
+    	NotificationManager notificationManager = (NotificationManager) context
+    	        .getSystemService(Context.NOTIFICATION_SERVICE);
+
+    	Resources res = context.getResources();
+    	NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+    	builder.setContentIntent(contentIntent)
+    	            .setSmallIcon(R.drawable.ic_launcher)
+    	            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_launcher))
+    	            .setTicker(message)
+    	            .setWhen(System.currentTimeMillis())
+    	            .setAutoCancel(true)
+    	            .setContentTitle(res.getString(R.string.app_name))
+    	            .setContentText(message);
     	
-        long when = System.currentTimeMillis();
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification(icon, message, when);
-        String title = context.getString(R.string.app_name);
-        Intent notificationIntent = new Intent(context, MainActivity.class);
-        // set intent so it does not start a new activity
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent intent =
-                PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        notification.setLatestEventInfo(context, title, message, intent);
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        notification.defaults |= Notification.DEFAULT_VIBRATE;
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(0, notification);
+    	Notification notification = builder.build();
+
+    	notificationManager.notify(0, notification);
+
     }
 
 }
