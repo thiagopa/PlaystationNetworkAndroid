@@ -38,55 +38,7 @@ public class FriendActivity extends Activity {
 		registerReceiver(refreshFriends, new IntentFilter(REFRESH_FRIENDS));
 		// -- Desenha a Tela
 		renderView();
-		// -- Cria o executor pra verificar o status dos amigos
-		scheduleTaskExecutor= Executors.newScheduledThreadPool(1);
-		// This schedule a task to run every 15 minutes:
-	    // -- Lógica que verifica se o amigo está ou não mais online
-		scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
-	      public void run() {
-	        
-	    	FriendsDBHelper friendsDBHelper = new FriendsDBHelper(getApplicationContext());
-	    	  
-	    	Log.d(TAG, "Friend is Offline Task");  
-	    	long now =  System.currentTimeMillis();
-	    	boolean updateView = false;  
-	    	for (Friend friend : friendsDBHelper.getFriends()) {
-				
-	    		long lastSeen = friend.getUpdated().getTime();
-
-	    		long diff = now - lastSeen;
-	    		
-	    		boolean isMoreThan15Minutes = diff > 900000l;
-	    		
-	    		Log.d(TAG, "Now " + now);
-	    		Log.d(TAG, "LastSeen " + lastSeen);
-	    		Log.d(TAG, "Difference " + diff);
-	    		Log.d(TAG, "IsMore? " + isMoreThan15Minutes);
-	    		
-	    		// -- Se o intervalo entre as datas for maior que 15 minutos em milisegundos XD
-	    		if(isMoreThan15Minutes) {
-	    			Log.d(TAG, friend.getPsnId() + " is Offline, updating info");  
-	    			friendsDBHelper.saveFriend(friend.getPsnId(), "Offline", friend.getAvatarSmall());
-	    			
-	    			updateView = true;
-	    		}
-	    		
-			}
-	    	
-	    	if(updateView) {
-		        // If you need update UI, simply do this:
-		        runOnUiThread(new Runnable() {
-		          public void run() {
-		            // update your UI component here.
-		            renderView();
-		          }
-		        });
-	    	}
-	    	
-	    	friendsDBHelper.close();
-	    	
-	      }
-	    }, 0, 20, TimeUnit.MINUTES);
+		
 	}
 
 	// -- Necessário, mesmo :P
