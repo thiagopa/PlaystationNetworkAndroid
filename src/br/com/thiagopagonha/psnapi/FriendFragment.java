@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -26,20 +25,16 @@ import br.com.thiagopagonha.psnapi.utils.ImageCache;
 
 public class FriendFragment extends Fragment {
 
-	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// -- Registra o Receiver para esse determinado evento
 		getActivity().registerReceiver(refreshFriends, new IntentFilter(REFRESH_FRIENDS));
-		// -- Desenha a Tela
-		renderView();
-		
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return new LinearLayout(getActivity().getApplicationContext());
+		return renderView();
 	}
 	
 	// -- Necessário, mesmo :P
@@ -56,7 +51,10 @@ public class FriendFragment extends Fragment {
 		
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			renderView();
+			
+			View view = renderView();
+			
+			getActivity().setContentView(view);
 		}
 	};
 	
@@ -64,7 +62,7 @@ public class FriendFragment extends Fragment {
 	 * Desenha a Tela dos amigos com as Informações vindas
 	 * Diretamente da base de dados
 	 */
-	private void renderView() {
+	private View renderView() {
 		
 		Context context = getActivity().getApplicationContext();
 		
@@ -114,6 +112,6 @@ public class FriendFragment extends Fragment {
 		
 		friendsDBHelper.close();
 		 
-		getActivity().setContentView(table);
+		return table;
 	}
 }

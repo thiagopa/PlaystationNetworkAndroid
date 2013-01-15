@@ -21,9 +21,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import br.com.thiagopagonha.psnapi.gcm.ServerUtilities;
 
@@ -34,6 +37,17 @@ public class MessageFragment extends Fragment {
 	TextView mDisplay;
 	AsyncTask<Void, Void, Void> mRegisterTask;
 
+	
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.activity_message, container, false); 
+		
+		mDisplay = (TextView) view.findViewById(R.id.display);
+		
+		refreshView();
+		
+		return view;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,8 +60,8 @@ public class MessageFragment extends Fragment {
 		// while developing the app, then uncomment it when it's ready.
 		GCMRegistrar.checkManifest(context);
 		
-		getActivity().setContentView(R.layout.activity_message);
-		mDisplay = (TextView) getActivity().findViewById(R.id.display);
+		//getActivity().setContentView(R.layout.activity_message);
+		
 		
 		getActivity().registerReceiver(mHandleMessageReceiver, new IntentFilter(
 				DISPLAY_MESSAGE_ACTION));
@@ -60,7 +74,7 @@ public class MessageFragment extends Fragment {
 		
 		if (regId.equals("")) {
 			// Automatically registers application on startup.
-			backGround(new Fragment() {
+			backGround(new Logic() {
 				void execute() {
 					GCMRegistrar.register(context, SENDER_ID);
 				}
@@ -71,18 +85,17 @@ public class MessageFragment extends Fragment {
 				// Try to register again, but not in the UI thread.
 				// It's also necessary to cancel the thread onDestroy(),
 				// hence the use of AsyncTask instead of a raw thread.
-				backGround(new Fragment() {
+				backGround(new Logic() {
 					void execute() {
 						ServerUtilities.register(context, regId);
 					}
 				});
 			}
 		}
-		refreshView();
 	}
 
 	// -- Lógica abaixo
-	abstract class Fragment {
+	abstract class Logic {
 		abstract void execute();
 	}
 	
@@ -90,7 +103,7 @@ public class MessageFragment extends Fragment {
 	 * Executa uma tarefa em background
 	 * @param f
 	 */
-	private void backGround(final Fragment f) {
+	private void backGround(final Logic f) {
 		mRegisterTask = new AsyncTask<Void, Void, Void>() {
 
 			@Override
@@ -128,7 +141,7 @@ public class MessageFragment extends Fragment {
 			GCMRegistrar.unregister(context);
             return true;
 		case R.id.options_sync:
-			backGround(new Fragment() {
+			backGround(new Logic() {
 				void execute() {
 					ServerUtilities.sync(context);
 				}
