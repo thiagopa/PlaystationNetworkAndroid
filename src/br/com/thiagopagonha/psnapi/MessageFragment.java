@@ -60,7 +60,11 @@ public class MessageFragment extends Fragment {
 		
 		if (regId.equals("")) {
 			// Automatically registers application on startup.
-			GCMRegistrar.register(context, SENDER_ID);
+			backGround(new Fragment() {
+				void execute() {
+					GCMRegistrar.register(context, SENDER_ID);
+				}
+			});
 		} else {
 			// Device is already registered on GCM, check server.
 			if (!GCMRegistrar.isRegisteredOnServer(context)) {

@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Window;
 
 public class MainActivity extends Activity {
 
@@ -14,6 +15,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+		
 		setContentView(R.layout.activity_tabs);
 
 		Resources res = getResources();
