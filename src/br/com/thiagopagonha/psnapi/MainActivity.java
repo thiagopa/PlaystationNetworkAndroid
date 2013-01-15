@@ -1,39 +1,66 @@
 package br.com.thiagopagonha.psnapi;
 
-import android.app.ActivityGroup;
-import android.content.Intent;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.widget.TabHost;
 
-public class MainActivity extends ActivityGroup {
+public class MainActivity extends Activity {
 
-	static TabHost tabHost;
-	static int tab = 0;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		 setContentView(R.layout.activity_tabs);
+
+		setContentView(R.layout.activity_tabs);
 
 		Resources res = getResources();
-		tabHost = (TabHost)findViewById(R.id.tabhost);
-		tabHost.setup(this.getLocalActivityManager());
-		TabHost.TabSpec spec;
-		Intent intent;
 
-		// Adiciona Tab #1
-		intent = new Intent().setClass(this, FriendActivity.class);
-		spec = tabHost.newTabSpec("0").setIndicator(getString(R.string.friends), res.getDrawable(R.drawable.friends)).setContent(intent);
-		tabHost.addTab(spec);
+		ActionBar actionbar = getActionBar();
+		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		// Adiciona Tab #2
-		intent = new Intent(this, MessageActivity.class);
-		spec = tabHost.newTabSpec("1").setIndicator(getString(R.string.history), res.getDrawable(R.drawable.clock)).setContent(intent);
-		tabHost.addTab(spec);
+		ActionBar.Tab FriendTab = actionbar.newTab()
+				.setText(getString(R.string.friends))
+				.setIcon(res.getDrawable(R.drawable.friends));
+		ActionBar.Tab MessageTab = actionbar.newTab()
+				.setText(getString(R.string.history))
+				.setIcon(res.getDrawable(R.drawable.clock));
 
-		tabHost.setCurrentTab(1);
-		tabHost.setCurrentTab(0);
+		Fragment FriendFragment = new FriendFragment();
+		Fragment MessageFragment = new MessageFragment();
+
+		FriendTab.setTabListener(new InnerTabsListener(FriendFragment));
+		MessageTab.setTabListener(new InnerTabsListener(MessageFragment));
+
+		actionbar.addTab(FriendTab);
+		actionbar.addTab(MessageTab);
+
+	}
+
+	class InnerTabsListener implements ActionBar.TabListener {
+		public Fragment fragment;
+
+		public InnerTabsListener(Fragment fragment) {
+			this.fragment = fragment;
+		}
+
+		@Override
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+			// Toast.makeText(StartActivity.appContext, "Reselected!",
+			// Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			ft.replace(R.id.fragment_container, fragment);
+		}
+
+		@Override
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+			ft.remove(fragment);
+		}
 
 	}
 

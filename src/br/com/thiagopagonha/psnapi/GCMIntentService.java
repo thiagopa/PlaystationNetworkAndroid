@@ -109,10 +109,10 @@ public class GCMIntentService extends GCMBaseIntentService {
     private static void generateNotification(Context context, String message) {
     	Log.d(TAG, "generateNotification");
     	
-    	Intent notificationIntent = new Intent(context, FriendActivity.class);
+    	Intent notificationIntent = new Intent(context, FriendFragment.class);
     	PendingIntent contentIntent = PendingIntent.getActivity(context,
     	        0, notificationIntent,
-    	        PendingIntent.FLAG_CANCEL_CURRENT);
+    	        PendingIntent.FLAG_UPDATE_CURRENT);
 
     	NotificationManager notificationManager = (NotificationManager) context
     	        .getSystemService(Context.NOTIFICATION_SERVICE);
