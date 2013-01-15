@@ -80,8 +80,6 @@
           application uses a custom BroadcastReceiver that redefines its name.
         -->
         <service android:name="br.com.thiagopagonha.psnapi.GCMIntentService" />
-        <activity android:name="br.com.thiagopagonha.psnapi.MessageFragment"></activity>
-        <activity android:name="br.com.thiagopagonha.psnapi.FriendFragment"></activity>
         
     </application>
 

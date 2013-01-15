@@ -56,12 +56,19 @@ public class GCMIntentService extends GCMBaseIntentService {
         String psnId = intent.getStringExtra("PsnId");
         String avatarSmall = intent.getStringExtra("AvatarSmall");
         
-        String message = psnId + " is playing " + playing;
+        // -- Maquiagem do playing
+        if(playing == null) {
+        	playing = "Offline";
+        } else if (playing.equals("")) {
+        	playing = "Online";
+        }
+        
+        String message = psnId + " is " + playing;
 
         // -- Mostra Mensagem no Log
         displayMessage(context, message);
         // -- Atualiza Informações do amigo
-        if(!updateUserInfo(psnId,playing,avatarSmall)) {
+        if(!updateUserInfo(psnId,playing,avatarSmall) && !playing.startsWith("Last")) {
         	// -- Manda atualizar a view
         	context.sendBroadcast(new Intent(REFRESH_FRIENDS));
         	// -- Só gera notificação para o usuário caso não seja o mesmo jogo

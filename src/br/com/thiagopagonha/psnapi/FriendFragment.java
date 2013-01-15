@@ -99,6 +99,7 @@ public class FriendFragment extends Fragment {
 			 // -- O jogo que está jogando
 			 TextView playing = new TextView(context);
 			 playing.setText(friend.getPlaying());
+			 
 			 playing.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16); 
 			 playing.setTypeface(Typeface.SERIF, Typeface.BOLD);
 			 playing.setTextColor(Color.BLUE);
