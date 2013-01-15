@@ -52,6 +52,8 @@ public class MessageFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		setHasOptionsMenu(true);
+		
 		final Context context = getActivity().getApplicationContext();
 		
 		// Make sure the device has the proper dependencies.
@@ -59,9 +61,6 @@ public class MessageFragment extends Fragment {
 		// Make sure the manifest was properly set - comment out this line
 		// while developing the app, then uncomment it when it's ready.
 		GCMRegistrar.checkManifest(context);
-		
-		//getActivity().setContentView(R.layout.activity_message);
-		
 		
 		getActivity().registerReceiver(mHandleMessageReceiver, new IntentFilter(
 				DISPLAY_MESSAGE_ACTION));
@@ -125,6 +124,7 @@ public class MessageFragment extends Fragment {
 	@Override
 	 public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.activity_message, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	
