@@ -60,6 +60,8 @@ public final class CommonUtilities {
     
     public static final String PREFS_NAME = "UserInfo";
     
+    public static final String FILENAME = "friends.txt";
+    
 	/**
 	 * Converte uma data padrão String em util.Date
 	 * @param dateToFormat

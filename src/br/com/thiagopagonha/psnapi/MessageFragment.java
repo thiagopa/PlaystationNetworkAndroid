@@ -1,25 +1,17 @@
 package br.com.thiagopagonha.psnapi;
 
-import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.DISPLAY_MESSAGE_ACTION;
-import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.EXTRA_MESSAGE;
-import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.SENDER_ID;
+import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.*;
 import static br.com.thiagopagonha.psnapi.utils.CommonUtilities.TAG;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.GregorianCalendar;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -61,9 +53,6 @@ public class MessageFragment extends Fragment {
 		// Make sure the manifest was properly set - comment out this line
 		// while developing the app, then uncomment it when it's ready.
 		GCMRegistrar.checkManifest(context);
-		
-		getActivity().registerReceiver(mHandleMessageReceiver, new IntentFilter(
-				DISPLAY_MESSAGE_ACTION));
 		
 		Log.d(TAG, "Registered Message Handler");
 		
@@ -159,27 +148,10 @@ public class MessageFragment extends Fragment {
 		if (mRegisterTask != null) {
 			mRegisterTask.cancel(true);
 		}
-		getActivity().unregisterReceiver(mHandleMessageReceiver);
 		GCMRegistrar.onDestroy(context);
 		super.onDestroy();
 		
 	}
-
-	private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-			
-			String currentDateTimeString = DateFormat.getTimeFormat(context).format(GregorianCalendar.getInstance().getTime());
-			
-			appendLog("[" + currentDateTimeString + "] " + newMessage + "\n");
-			
-			refreshView();
-		}
-	};
-	
-	
-	private static final String FILENAME = "friends.txt";
 
 	private String readLog()  {
 		
@@ -212,16 +184,6 @@ public class MessageFragment extends Fragment {
 			refreshView();
 		} catch (FileNotFoundException e) {
 			Log.e(TAG, "Não foi possível reiniciar arquivo de log");
-		}
-	}
-	
-	private void appendLog(String toBeLogged)  {
-		try {
-			FileOutputStream fos = getActivity().openFileOutput(FILENAME, Context.MODE_APPEND);
-			fos.write(toBeLogged.getBytes());
-			fos.close();
-		} catch (IOException io) {
-			Log.e(TAG, "Não foi possível atualizar arquivo de log");
 		}
 	}
 	
