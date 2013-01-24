@@ -133,7 +133,6 @@ public class MessageFragment extends Fragment {
 			backGround(new Logic() {
 				void execute() {
 					ServerUtilities.sync(context);
-					refreshView();
 				}
 			});
 			
