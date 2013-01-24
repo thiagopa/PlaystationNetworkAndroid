@@ -116,7 +116,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     private static void generateNotification(Context context, String message) {
     	Log.d(TAG, "generateNotification");
     	
-    	Intent notificationIntent = new Intent(context, FriendFragment.class);
+    	Intent notificationIntent = new Intent(context, MainActivity.class);
     	PendingIntent contentIntent = PendingIntent.getActivity(context,
     	        0, notificationIntent,
     	        PendingIntent.FLAG_UPDATE_CURRENT);
