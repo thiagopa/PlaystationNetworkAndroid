@@ -134,7 +134,8 @@ public class GCMIntentService extends GCMBaseIntentService {
     	            .setWhen(System.currentTimeMillis())
     	            .setAutoCancel(true)
     	            .setContentTitle(res.getString(R.string.app_name))
-    	            .setContentText(message);
+    	            .setContentText(message)
+    	            .setDefaults(Notification.DEFAULT_ALL);
     	
     	Notification notification = builder.build();
 
