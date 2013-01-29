@@ -57,13 +57,11 @@ public class GCMIntentService extends GCMBaseIntentService {
         String avatarSmall = intent.getStringExtra("AvatarSmall");
         
         // -- Maquiagem do playing
-        if(playing == null) {
-        	playing = "Offline";
-        } else if (playing.equals("")) {
+        if (playing.equals("null")) {
         	playing = "Online";
         }
         
-        String message = psnId + " is " + playing;
+        String message = psnId + " : " + playing;
 
         // -- Mostra Mensagem no Log
         displayMessage(context, message);
