@@ -93,6 +93,8 @@ public class FriendFragment extends Fragment {
 			 psnId.setText(friend.getPsnId());
 			 psnId.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18); 
 			 psnId.setTypeface(Typeface.SERIF, Typeface.BOLD);
+			 psnId.setTextColor(Color.WHITE);
+			 psnId.setShadowLayer(1,1,1,Color.BLACK);
 			 
 			 // -- O jogo que está jogando
 			 TextView playing = new TextView(context);

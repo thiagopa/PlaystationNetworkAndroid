@@ -62,11 +62,14 @@ public class GCMIntentService extends GCMBaseIntentService {
         }
         
         String message = psnId + " : " + playing;
+        
+        // -- Mostra Mensagem no Log caso não seja Last sign in...
+        if(!playing.startsWith("Last")) {
+	        displayMessage(context, message);
+        }
 
         // -- Atualiza Informações do amigo
         if(!updateUserInfo(psnId,playing,avatarSmall) && !playing.startsWith("Last")) {
-        	// -- Mostra Mensagem no Log
-        	displayMessage(context, message);
         	// -- Manda atualizar a view
         	context.sendBroadcast(new Intent(REFRESH_FRIENDS));
         	// -- Só gera notificação para o usuário caso não seja o mesmo jogo
